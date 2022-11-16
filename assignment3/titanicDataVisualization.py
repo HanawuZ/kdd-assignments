@@ -2,6 +2,29 @@ from sklearn.metrics import plot_confusion_matrix
 import matplotlib.pyplot as plt
 import numpy as np
 
+# * Function For classification report bar plot.
+def classificationBarPlot(clf_report_axe , clf_report_labels, clf_report, survived_class) :
+    """
+    Call function `classificationBarPlot` for plotting not survived and survived bayes classification report bars.
+    has arguments.
+       - bayes classification report axes.
+       - classification report labels = ("Precision" , "Recall" ,"F1-Score")
+       - bayes classification reports = (not survived classification report, survived classification report)
+    """
+    bar_width = 0.15
+    opacity = 0.8
+    index = np.arange(len(clf_report_labels))
+
+    clf_report_axe.bar(
+        clf_report_labels,
+        height = clf_report,
+        width = bar_width,
+        alpha = opacity,
+    )
+    # clf_report_axe.bar_label(rect, padding=3)
+    clf_report_axe.set_xticks(index , clf_report_labels)
+    clf_report_axe.title.set_text(survived_class)
+
 def confusionMatrixComparison(cls_list : list, test_titanic_df, titanic_survived_class):
     fig, axes = plt.subplots(1, 2, figsize = (18, 8))
     fig.suptitle("Titanic Survivor Classifier Model comparison")
@@ -78,3 +101,97 @@ def classificationReportComparison(bayes_clf_report : dict, decision_tree_clf_re
     axes[1].title.set_text('Survived Classification score')
     plt.tight_layout()
     plt.show()
+
+#//------------------------------------------------------------------------------------------------------------
+def classificationComparison(clf_dict : dict):
+    """ Parameter clf_dict
+    clf_dict = {
+        'Naive Bayes': [naive_bayes_model, bayes_clf_report],
+        'Decision Tree': [decision_tree_model, decision_tree_clf_report],
+        'Survived Class' : [prepared_titanic_test_df, actual_titanic_test_survived_class]
+    }
+    """
+    # Define Classification Labels.
+    clfReport_labels = ("Precision" , "Recall" ,"F1-Score")
+    survived_class_labels = ["Not Survived", "Survived"]
+
+
+    # Define Naive Bayes model & classification report.
+    bayes_clf = clf_dict['Naive Bayes'][0]
+    bayes_clf_report = clf_dict['Naive Bayes'][1]
+    bayes_clf_report = [bayes_clf_report["Not Survived"], bayes_clf_report["Survived"]]
+    
+
+    decision_tree_clf = clf_dict['Decision Tree'][0]
+    decision_tree_clf_report = clf_dict['Decision Tree'][1]
+
+    clf_fig = plt.figure(constrained_layout=True, figsize=(12, 8))
+    clf_fig.suptitle('Titanic Classification Comparison')
+    bayes_fig, decision_tree_fig = clf_fig.subfigures(1, 2, wspace=0.07)
+
+    bayes_fig.suptitle('Naive Bayes Classification')
+
+    # Plots Naive Bayes confusion matrix
+    bayes_confusion_matrix_figs, bayes_clf_report_figs =  bayes_fig.subfigures(2, 1, height_ratios=[1, 1.4])
+    bayes_confusion_matrix_figs.suptitle('Confusion Matrix')
+    plot_confusion_matrix(
+        bayes_clf,
+        clf_dict['Survived Class'][0],
+        clf_dict['Survived Class'][1],
+        ax = bayes_confusion_matrix_figs.subplots(1, 1),
+        cmap = 'Blues',
+        display_labels=survived_class_labels
+    )
+
+    # Plots Naive Bayes Classifaction report. 
+    bayes_clf_report_figs.suptitle('Bayes Classification Report')
+
+    # Create Naive Bayes classification report list.
+    notSurvied_bayes_clfReport = list(bayes_clf_report[0].values())
+    notSurvied_bayes_clfReport.pop()
+    survied_bayes_clfReport = list(bayes_clf_report[1].values())
+    survied_bayes_clfReport.pop()
+    bayes_clfReport = [notSurvied_bayes_clfReport, survied_bayes_clfReport]
+    
+    # Plot subplot with 2 rows & 1 columns.
+    bayes_clf_report_axes = bayes_clf_report_figs.subplots(nrows=2, ncols=1, sharey=True)
+
+    # Call function `classificationBarPlot` for plotting not survived and survived bayes classification report bars.
+    # has arguments.
+    #   -> bayes classification report axes.
+    #   -> classification report labels = ("Precision" , "Recall" ,"F1-Score")
+    #   -> bayes classification reports = (not survived classification report, survived classification report)
+    
+    # ? Test not survived bayes clf report.
+    for axe, clf_report,survived_class in zip(bayes_clf_report_axes, bayes_clfReport, survived_class_labels):
+        classificationBarPlot(axe, clfReport_labels, clf_report, survived_class)
+
+    ########################################################################
+    decision_tree_fig.suptitle('Decision Tree Classification')
+    decision_tree_confusion_matrix_figs, decision_tree_clf_report_figs =  decision_tree_fig.subfigures(2, 1, height_ratios=[1, 1.4])
+    decision_tree_confusion_matrix_figs.suptitle('Confusion Matrix')
+    
+    #//-------------------------------------------------------------------------------------
+    plot_confusion_matrix(
+        decision_tree_clf,
+        clf_dict['Survived Class'][0],
+        clf_dict['Survived Class'][1],
+        ax = decision_tree_confusion_matrix_figs.subplots(1, 1),
+        cmap = 'hot_r',
+        display_labels=survived_class_labels
+    )
+
+    notSurvied_decision_tree_clfReport = list(bayes_clf_report[0].values())
+    notSurvied_decision_tree_clfReport.pop()
+    survied_decision_tree_clfReport = list(bayes_clf_report[1].values())
+    survied_decision_tree_clfReport.pop()
+    decision_tree_clfReport = [notSurvied_decision_tree_clfReport, survied_decision_tree_clfReport]
+
+    decision_tree_clf_report_figs.suptitle('Decision Tree Classification Report')
+    decision_tree_clf_report_axes = decision_tree_clf_report_figs.subplots(2, 1, sharex=True)
+    for axe, clf_report,survived_class in zip(decision_tree_clf_report_axes, decision_tree_clfReport, survived_class_labels):
+        classificationBarPlot(axe, clfReport_labels, clf_report, survived_class)
+
+    plt.show()
+    
+    

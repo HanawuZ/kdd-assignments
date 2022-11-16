@@ -83,7 +83,7 @@ decision_tree_pred_survived_class = decision_tree_model.predict(prepared_titanic
 
 # //--------------------------------------------------------------------------------------
 # ########################## + Performance + ##########################
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report,confusion_matrix
 from graphviz import Source
 from titanicDataVisualization import *
 
@@ -95,7 +95,7 @@ bayes_clf_report = classification_report(
     target_names=["Not Survived","Survived"],
     output_dict=True
 )
-# print(bayes_clf_report)
+print(bayes_clf_report)
 
 # Show Decision Tree classification report.
 print("\n\n++++++++ Decision Tree Classfication Report +++++++")
@@ -107,10 +107,20 @@ decision_tree_clf_report = classification_report(
 )
 # print(decision_tree_clf_report)
 
-clf_list= [naive_bayes_model,decision_tree_model]
+# clf_list= [naive_bayes_model,decision_tree_model]
+clf_dict = {
+    'Naive Bayes': [naive_bayes_model, bayes_clf_report],
+    'Decision Tree': [decision_tree_model, decision_tree_clf_report],
+    'Survived Class' : [prepared_titanic_test_df, actual_titanic_test_survived_class]
+}
 
 # ########################## + Confusion Matrix Visualization + ##########################
-confusionMatrixComparison(clf_list, prepared_titanic_test_df, actual_titanic_test_survived_class)
+# print(confusion_matrix(y_true=actual_titanic_test_survived_class, y_pred=bayes_pred_survived_class))
+# print(confusion_matrix(y_true=actual_titanic_test_survived_class, y_pred=decision_tree_pred_survived_class))
+
+classificationComparison(clf_dict)
+
+# confusionMatrixComparison(clf_list, prepared_titanic_test_df, actual_titanic_test_survived_class)
 # classificationReportComparison(bayes_clf_report, decision_tree_clf_report)
 
 # # ########################## + Decision Tree mdoel Export + ##########################
