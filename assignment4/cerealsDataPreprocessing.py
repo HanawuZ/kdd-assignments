@@ -1,3 +1,4 @@
+from sklearn.model_selection import train_test_split
 
 # * 
 def dataPreprocessing(cereals_df):
@@ -17,4 +18,15 @@ def dataPreprocessing(cereals_df):
 
 # * Fucntion for split validation.
 def splitValidation(cereals_df):
-    return
+
+    # Split dataframe to train set and test set.
+    cereals_train_df, cereals_test_df = train_test_split(cereals_df, test_size=0.2, random_state=0)
+
+    # Split feature labels & class label(s).
+    cereals_feature_train = cereals_train_df.drop(columns = ["rating"])
+    cereals_feature_test = cereals_test_df.drop(columns = ["rating"])
+
+    cereals_rating_train = cereals_train_df["rating"]
+    cereals_rating_test = cereals_test_df["rating"]
+
+    return cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test

@@ -1,27 +1,18 @@
 import pandas as pd
 import pathlib
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from cerealsDataPreprocessing import *
+from sklearn import metrics
+import numpy as np
+
+# * Tasks
+# * (1) Program performance report & data visualization module.
+# * (2) Improve program to approch lowest Mean absolute error as low as possible. 
+# * (3) Clean codes.
 
 # Define cereals csv file path.
 cereals_path = pathlib.Path(__file__).parent / "cereal.csv"
  
-
-def dataPreprocessing(cereals_df):
-    # print(cereals_df.info())
-
-    # Drop attributes `name`, `mfr` and `type`.
-    # These attributes aren't numerical type.
-    cereals_df = cereals_df.loc[:, ~cereals_df.columns.isin(["name", "mfr", "type"])]
-
-    # Replace value -1 in attributes `potass`,`carbo` and `sugars` with average values of each attribute.
-    # Value -1 is missing value according to this context.
-    for attr in ["carbo", "sugars", "potass"]:
-        cereals_df[attr] = cereals_df[attr].replace(to_replace=-1, value=cereals_df[attr].mean())
-
-    # return cereals_df
-    return cereals_df
-
 if __name__ == "__main__":
     # Read cereals csv file.
     cereals_df = pd.read_csv(cereals_path)
@@ -34,8 +25,37 @@ if __name__ == "__main__":
     # 1. Drop attributes `name`, `mfr` and `type`.  
     # 2. Fill missing value (-1) with average value of attribute.
     cereals_df = dataPreprocessing(cereals_df)
-    print(cereals_df.info())
-    # Initialize linear regression model.
-    linear_regression_model = LinearRegression()
 
+    # Split dataframe to train set & test set.
+    # Split feature labels & class label(s).
+    cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test = splitValidation(cereals_df)
+    
+    # Initialize linear regression model.
+    cereals_rating_prediction_model = LinearRegression()
+
+    # Train model.
+    cereals_rating_prediction_model.fit(cereals_feature_train, cereals_rating_train)
+
+    # Predict
+    cereals_predicted_rating = cereals_rating_prediction_model.predict(cereals_feature_test)
+
+    #* SOURCE : https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+    Compare_Ad_dataframe = pd.concat( 
+        [ cereals_rating_test.reset_index() ,
+          pd.Series(
+            cereals_predicted_rating , 
+            name="Predicted Rating")
+        ] ,
+        axis = "columns"  
+    )
+
+    print(Compare_Ad_dataframe.head(5))
+
+
+    print("R2-Score : ",cereals_rating_prediction_model.score(cereals_feature_test , cereals_rating_test));
+    print("MAE : ", metrics.mean_absolute_error(cereals_rating_test , cereals_predicted_rating));
+    print("RMSE : ", np.sqrt(metrics.mean_squared_error(cereals_rating_test , cereals_predicted_rating)));
+
+
+    
     
