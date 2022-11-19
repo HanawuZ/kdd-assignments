@@ -37,25 +37,36 @@ if __name__ == "__main__":
     # 1. Drop attributes `name`, `mfr` and `type`.  
     # 2. Fill missing value (-1) with average value of attribute.
     cereals_df = dataPreprocessing(cereals_df)
-    print()
 
     # Initialize cereals rating predicton object.
     cereal_rating_prediction_model = CerealRatingPrediction(cereals_df)
+
+    # Show cereaks dataframe infomantion.
     cereal_rating_prediction_model.getCerealDataframeInfo()
     
+    # Split dataframe to train set & test set.
+    # Split feature labels & class label(s).
+    cereal_rating_prediction_model.cerealsDataframeSplit()
+    
+    # Initialize linear regression model.
+    cereal_rating_prediction_model.modelInit()
+
+    # Train model.
+    cereal_rating_prediction_model.trainModel()
+
+    # Predict
+    cereal_rating_prediction_model.predictRating()
+
+    # Display performance report.
+    cereal_rating_prediction_model.showStats()
 
     # ------------------------------ Stash ------------------------------- 
-    # # Split dataframe to train set & test set.
-    # # Split feature labels & class label(s).
     # cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test = splitValidation(cereals_df)
     
-    # # Initialize linear regression model.
     # cereals_rating_prediction_model = LinearRegression()
 
-    # # Train model.
     # cereals_rating_prediction_model.fit(cereals_feature_train, cereals_rating_train)
 
-    # # Predict
     # cereals_predicted_rating = cereals_rating_prediction_model.predict(cereals_feature_test)
 
     
