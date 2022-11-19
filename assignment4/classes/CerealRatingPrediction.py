@@ -2,6 +2,7 @@ from modules.cerealsDataPreprocessing import *
 from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+import numpy as np
 
 class CerealRatingPrediction:
     """
@@ -58,7 +59,6 @@ class CerealRatingPrediction:
             self.cereals_feature_train,
             self.cereals_rating_train
         )
-        print("Train Model complete")
 
     # Cereal rating prediction method
     def predictRating(self):
@@ -83,19 +83,40 @@ class CerealRatingPrediction:
     #* Method for showing regression equation of cereals rating prediction model.
     def showRegressionEquation(self):
         """
-        ### Plan(s):
-        - Show regression equation by getting coef , intercept and attribute names.
+        ### Method for showing regression equation of cereals rating prediction model.
         """
         # Get intercept value of prediction model.
+        self.regression_intecept = self.cereal_rating_prediction_model.intercept_
 
         # Get array of coefficent value of prediction model.
+        self.regression_coef = self.cereal_rating_prediction_model.coef_
 
+        # Get list of feature names. 
         # Zip model coefficient with cereals feature names.
-        
         # Iteration for creating regression equation as string.
-        
-        # Print regression equation.
-        pass
+        print("\nRegression Equation :")
+        for coef, feature_name in zip(self.regression_coef, self.cereals_feature_train.columns):
+            # Round coefficient value to get value with 4 decimals.
+            
+            # If coef value < 0 then parse value to string with '-' signed
+            # "- X.XXXX" + " * " + feature name
+            # format ==> - X.XXXX * feature_name 
+            if (coef < 0):
+                print("- {coef} * {feature_name}".format(coef=np.around(np.absolute(coef), decimals=4), feature_name=feature_name))
+
+            # If coef value > 0 then parse value to string with '+' signed
+            # "+ X.XXXX" + " * " + feature name
+            # format ==> + X.XXXX * feature_name 
+            else :
+                print("+ {coef} * {feature_name}".format(coef=np.around(coef, decimals=4), feature_name=feature_name))
+
+        # Print intercept value.
+        if (self.regression_intecept < 0):
+            print("- {intercept}".format(intercept=np.around(np.absolute(self.regression_intecept), decimals=4), feature_name=feature_name))
+
+        else :
+            print("+ {intercept}".format(intercept=np.around(self.regression_intecept, decimals=4), feature_name=feature_name))
+
     
     #* Method for data visualization
     def visualizePrediction(self):

@@ -54,11 +54,12 @@ if __name__ == "__main__":
     # Train model.
     cereal_rating_prediction_model.trainModel()
 
+    cereal_rating_prediction_model.showRegressionEquation()
     # Predict
-    cereal_rating_prediction_model.predictRating()
+    # cereal_rating_prediction_model.predictRating()
 
     # Display performance report.
-    cereal_rating_prediction_model.showStats()
+    # cereal_rating_prediction_model.showStats()
 
     # ------------------------------ Stash ------------------------------- 
     # cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test = splitValidation(cereals_df)
