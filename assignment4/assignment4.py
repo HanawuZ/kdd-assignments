@@ -50,8 +50,13 @@ if __name__ == "__main__":
     )
 
     print(Compare_Ad_dataframe.head(5))
-
-
+    
+    # Coeff, Slope
+    print("\nCoef : ",cereals_rating_prediction_model.coef_)
+    
+    # Intercept
+    print("Intercept : ",cereals_rating_prediction_model.intercept_)
+    
     print("R2-Score : ",cereals_rating_prediction_model.score(cereals_feature_test , cereals_rating_test));
     print("MAE : ", metrics.mean_absolute_error(cereals_rating_test , cereals_predicted_rating));
     print("RMSE : ", np.sqrt(metrics.mean_squared_error(cereals_rating_test , cereals_predicted_rating)));
