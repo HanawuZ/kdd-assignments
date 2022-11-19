@@ -2,8 +2,7 @@ import pandas as pd
 import pathlib
 from sklearn.linear_model import LinearRegression
 from cerealsDataPreprocessing import *
-from sklearn import metrics
-import numpy as np
+from cerealsPerformanceReport import regressionPerformanceReport
 
 # * Tasks
 # * (1) Program performance report & data visualization module.
@@ -39,6 +38,7 @@ if __name__ == "__main__":
     # Predict
     cereals_predicted_rating = cereals_rating_prediction_model.predict(cereals_feature_test)
 
+    
     #* SOURCE : https://pandas.pydata.org/docs/reference/api/pandas.concat.html
     Compare_Ad_dataframe = pd.concat( 
         [ cereals_rating_test.reset_index() ,
@@ -50,17 +50,14 @@ if __name__ == "__main__":
     )
 
     print(Compare_Ad_dataframe.head(5))
-    
+    regressionPerformanceReport(cereals_feature_test, cereals_rating_prediction_model, cereals_rating_test , cereals_predicted_rating)
     # Coeff, Slope
     print("\nCoef : ",cereals_rating_prediction_model.coef_)
     
     # Intercept
     print("Intercept : ",cereals_rating_prediction_model.intercept_)
     
-    print("R2-Score : ",cereals_rating_prediction_model.score(cereals_feature_test , cereals_rating_test));
-    print("MAE : ", metrics.mean_absolute_error(cereals_rating_test , cereals_predicted_rating));
-    print("RMSE : ", np.sqrt(metrics.mean_squared_error(cereals_rating_test , cereals_predicted_rating)));
-
+    
 
     
     
