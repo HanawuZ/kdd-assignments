@@ -2,7 +2,9 @@ from modules.cerealsDataPreprocessing import *
 from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
+import pandas as pd
 
 class CerealRatingPrediction:
     """
@@ -22,7 +24,8 @@ class CerealRatingPrediction:
     - / SplitValidation : split feature & labels and train & test.
     - / Train model method
     - / Prediction method
-    - / rating prediction performance report object.
+    - / Rating prediction performance report object.
+    - / Printing regression equation.
     - (WIP) rating prediction data visualization object. 
 
     """
@@ -63,6 +66,7 @@ class CerealRatingPrediction:
     # Cereal rating prediction method
     def predictRating(self):
         self.predicted_rating = self.cereal_rating_prediction_model.predict(self.cereals_feature_test)
+        print(self.predicted_rating)
 
     # * Methos for show regression statistics
     def showStats(self):
@@ -125,5 +129,38 @@ class CerealRatingPrediction:
         - Using matplotlib or seaborn
         - Visualize rating and predicted rating line graph
         """
+        # Visualize line graph of actual cereal rating.
+        # Y Axis is feature labels
+        # X Axis is class labels (`rating`).
         
-        pass
+        # Get protein and actual cereals rating then reset index.
+        protein = self.cereals_feature_test["protein"].reset_index().drop(columns = ["index"])
+        actual_rating = self.cereals_rating_test.reset_index().drop(columns = ["index"])
+        
+        # Transfrom numpy array into pandas series and named column 'rating'
+        predicted_rating = pd.Series(self.predicted_rating)
+        predicted_rating.name = "rating"
+
+        # Plot protein-cereal rating relations with seaborn.
+        # Compare line graph between protein-actual rating and protein-predicted rating
+        sns.lineplot(
+            x="rating" , y="protein" ,
+            data = pd.concat([protein,actual_rating], axis=1),
+            label="actual"
+        )
+
+        sns.lineplot(
+            x="rating" , y="protein" ,
+            data = pd.concat([protein,predicted_rating], axis=1),
+            label="predicted"
+        )
+        plt.xlabel("cereals rating")
+        plt.ylabel("Proteins")
+        plt.legend()
+        plt.show()
+
+        # Visualize line graph of predicted cereal rating.
+
+        
+        
+        

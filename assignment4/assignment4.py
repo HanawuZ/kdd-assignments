@@ -55,20 +55,14 @@ if __name__ == "__main__":
     cereal_rating_prediction_model.trainModel()
 
     cereal_rating_prediction_model.showRegressionEquation()
+    
     # Predict
-    # cereal_rating_prediction_model.predictRating()
+    cereal_rating_prediction_model.predictRating()
 
     # Display performance report.
-    # cereal_rating_prediction_model.showStats()
+    cereal_rating_prediction_model.showStats()
 
-    # ------------------------------ Stash ------------------------------- 
-    # cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test = splitValidation(cereals_df)
-    
-    # cereals_rating_prediction_model = LinearRegression()
-
-    # cereals_rating_prediction_model.fit(cereals_feature_train, cereals_rating_train)
-
-    # cereals_predicted_rating = cereals_rating_prediction_model.predict(cereals_feature_test)
+    cereal_rating_prediction_model.visualizePrediction()
 
     
     # #* SOURCE : https://pandas.pydata.org/docs/reference/api/pandas.concat.html
