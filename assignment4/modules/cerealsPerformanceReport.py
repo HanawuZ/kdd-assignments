@@ -1,6 +1,6 @@
 from sklearn import metrics
 import numpy as np
-# import statsmodels.api as sm
+import statsmodels.api as sm
 
 # * Function for display performance report of regression.
 def regressionPerformanceReport(cereals_feature_test, cereals_rating_prediction_model, cereals_rating_test , cereals_predicted_rating):
@@ -34,17 +34,23 @@ def showRegressionEquation(cereals_rating_predicted_model, cereals_feature_label
 
 # Guide : https://datatofish.com/statsmodels-linear-regression/
 # * Function for show regression statistics
-def showRegressionStats(cereals_df):
+def showRegressionStats(cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test):
     # Passing dataframes.
-    # Set independenct variable(s).
 
+    # Set independenct variable(s).
+    
     # Set dependent variable. (`rating`)
 
     # Add constant 
+    cereals_feature_train = sm.add_constant(cereals_feature_train)
+    cereals_feature_test = sm.add_constant(cereals_feature_test)
 
     # Create regression model with OLS class from statmodel.api
-
+    model = sm.OLS(cereals_rating_train, cereals_feature_train).fit()
+    
     # Predicted model
+    prediction = model.predict(cereals_feature_test)
 
     # Display model Summary
-    return None
+    print(model.summary())
+    pass

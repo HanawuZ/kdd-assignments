@@ -1,1 +1,0 @@
-Create Object for cereal rating prediction model.
