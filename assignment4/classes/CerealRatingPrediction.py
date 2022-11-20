@@ -253,10 +253,72 @@ class CerealRatingPrediction:
 
 
         #?############### Real Code (WIP) ####################
-        
+        temp_regression_model = LinearRegression()
+        ignore_index = 0
+        features = list(self.cereals_feature_train.columns)
+        for i in range(len(features)-1):
+            first_feature = features[i]
+            second_feature = features[i+1]
+            if i<10:
+                if i>=2:
+                    ignore_index+=1
+                    for k in range(ignore_index):
+                        third_feature = features[k]
+                        temp_feature_train_df = pd.concat([
+                            self.cereals_feature_train[first_feature],
+                            self.cereals_feature_train[second_feature],
+                            self.cereals_feature_train[third_feature]
+                        ], axis=1).reset_index().drop(columns="index")
+                        temp_feature_test_df = pd.concat([
+                            self.cereals_feature_test[first_feature],
+                            self.cereals_feature_test[second_feature],
+                            self.cereals_feature_test[third_feature]
+                        ], axis=1).reset_index().drop(columns="index")
+                        temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
+                        temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+                        mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
+                        print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+            
+                for j in range(i+2,len(features)):
+                    third_feature = features[j]
+                    temp_feature_train_df = pd.concat([
+                        self.cereals_feature_train[first_feature],
+                        self.cereals_feature_train[second_feature],
+                        self.cereals_feature_train[third_feature]
+                    ], axis=1).reset_index().drop(columns="index")
+                    temp_feature_test_df = pd.concat([
+                        self.cereals_feature_test[first_feature],
+                        self.cereals_feature_test[second_feature],
+                        self.cereals_feature_test[third_feature]
+                    ], axis=1).reset_index().drop(columns="index")
+                    # print(temp_feature_train_df.sample(1))
+                    temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
+                    temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+                    mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
+                    print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+            else :
+                ignore_index+=1
+                for k in range(ignore_index):
+                    third_feature = features[k]
+                    temp_feature_train_df = pd.concat([
+                        self.cereals_feature_train[first_feature],
+                        self.cereals_feature_train[second_feature],
+                        self.cereals_feature_train[third_feature]
+                    ], axis=1).reset_index().drop(columns="index")
+                    
+                    temp_feature_test_df = pd.concat([
+                        self.cereals_feature_test[first_feature],
+                        self.cereals_feature_test[second_feature],
+                        self.cereals_feature_test[third_feature]
+                    ], axis=1).reset_index().drop(columns="index")
+
+                    temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
+                    temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+                    mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
+                    print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+                    
         #?###########################################
 
-        pass
 
 
         
