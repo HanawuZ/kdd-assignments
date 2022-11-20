@@ -49,8 +49,10 @@ if __name__ == "__main__":
     cereal_rating_prediction_model.cerealsDataframeSplit()
     
     # Initialize linear regression model.
-    cereal_rating_prediction_model.modelInit()
+    # cereal_rating_prediction_model.modelInit()
     print("\n--------------------------------------------------------------")
+
+    # Find 3 feature attributes that give lowest Mean absolute error.
     cereal_rating_prediction_model.findLowestMeanAbsoluteError()
 
 

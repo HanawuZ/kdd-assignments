@@ -153,29 +153,6 @@ class CerealRatingPrediction:
         plt.show()
 
     def findLowestMeanAbsoluteError(self):
-        # ? Features : [calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups]
-    
-        #?############### + Test + ##################
-        # temp_regression_model = LinearRegression()
-        # print(list(self.cereals_feature_train.columns))
-        # temp_feature_train_df = pd.concat([
-        #     self.cereals_feature_train["calories"],
-        #     self.cereals_feature_train["protein"],
-        #     self.cereals_feature_train["fat"]
-        # ], axis=1).reset_index().drop(columns="index")
-        # temp_feature_test_df = pd.concat([
-        #     self.cereals_feature_test["calories"],
-        #     self.cereals_feature_test["protein"],
-        #     self.cereals_feature_test["fat"]
-        # ], axis=1).reset_index().drop(columns="index")
-
-        # temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
-        # temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
-        # mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-        # print("MAE : {}".format(mae))
-        #?###########################################
-
-
         # +++++ Pseudo Code +++++
         # Get array of feature names
         # Initialize temporary linear regression model.
@@ -205,75 +182,80 @@ class CerealRatingPrediction:
         #             Create new feature_train_df with features[i],features[i+1] and features[j]
         #             Train regression model with new feature_train_df and label_train_df
         #             Get mean absolute error
+        
+        # ? Features : [calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups]
+        #?############### + Test + ##################
+        # temp_regression_model = LinearRegression()
+        # print(list(self.cereals_feature_train.columns))
+        # temp_feature_train_df = pd.concat([
+        #     self.cereals_feature_train["calories"],
+        #     self.cereals_feature_train["protein"],
+        #     self.cereals_feature_train["sugars"]
+        # ], axis=1).reset_index().drop(columns="index")
+        # temp_feature_test_df = pd.concat([
+        #     self.cereals_feature_test["calories"],
+        #     self.cereals_feature_test["protein"],
+        #     self.cereals_feature_test["sugars"]
+        # ], axis=1).reset_index().drop(columns="index")
 
-        ##### Real codes #####
+        # temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
+        # temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+        # mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
+        # print("MAE : {}".format(mae))
+        # ?###########################################
+
+        #?############### + Test 2 + ##################
+        # temp_regression_model = LinearRegression()
         # ignore_index = 0
-        # temp_regression_model = LinearRegression()      
-        # features = list(self.cereals_feature_train.columns)          
-        # for i in range(len(features)):
-        #     first_feature_df = features[i]
-        #     second_feature_df = features[i+1]
-        #     if (i<10):
-        #         if (i>=2):
+        # features = list(self.cereals_feature_train.columns)
+        # for i in range(len(features)-1):
+        #     first_feature = features[i]
+        #     second_feature = features[i+1]
+        #     if i<5:
+        #         if i>=2:
         #             ignore_index+=1
         #             for k in range(ignore_index):
-        #                 third_feature_df = features[k]
+        #                 third_feature = features[k]
         #                 temp_feature_train_df = pd.concat([
-        #                     self.cereals_feature_train[first_feature_df],
-        #                     self.cereals_feature_train[second_feature_df],
-        #                     self.cereals_feature_train[third_feature_df]
-        #                 ]) 
-
+        #                     self.cereals_feature_train[first_feature],
+        #                     self.cereals_feature_train[second_feature],
+        #                     self.cereals_feature_train[third_feature]
+        #                 ], axis=1).reset_index().drop(columns="index")
         #                 temp_feature_test_df = pd.concat([
-        #                     self.cereals_feature_test[first_feature_df],
-        #                     self.cereals_feature_test[second_feature_df],
-        #                     self.cereals_feature_test[third_feature_df]
-        #                 ]) 
-
-        #                 temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
+        #                     self.cereals_feature_test[first_feature],
+        #                     self.cereals_feature_test[second_feature],
+        #                     self.cereals_feature_test[third_feature]
+        #                 ], axis=1).reset_index().drop(columns="index")
+        #                 # print(temp_feature_train_df.sample(1))
+        #                 temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
         #                 temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
         #                 mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-        #                 print("Features {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
-                    
-        #             for j in range(i+2,12):
-        #                 third_feature_df = features[j]
-        #                 temp_feature_train_df = pd.concat([
-        #                     self.cereals_feature_train[first_feature_df],
-        #                     self.cereals_feature_train[second_feature_df],
-        #                     self.cereals_feature_train[third_feature_df]
-        #                 ]) 
-
-        #                 temp_feature_test_df = pd.concat([
-        #                     self.cereals_feature_test[first_feature_df],
-        #                     self.cereals_feature_test[second_feature_df],
-        #                     self.cereals_feature_test[third_feature_df]
-        #                 ]) 
-
-        #                 temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
-        #                 temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
-        #                 mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-        #                 print("Features {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
-                    
-        #     else:
-        #         ignore_index+=1
-        #         for k in range(ignore_index):
-        #             third_feature_df = features[k]
+        #                 print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+            
+        #         for j in range(i+2,len(features)):
+        #             third_feature = features[j]
         #             temp_feature_train_df = pd.concat([
-        #                 self.cereals_feature_train[first_feature_df],
-        #                 self.cereals_feature_train[second_feature_df],
-        #                 self.cereals_feature_train[third_feature_df]
-        #             ]) 
-
+        #                 self.cereals_feature_train[first_feature],
+        #                 self.cereals_feature_train[second_feature],
+        #                 self.cereals_feature_train[third_feature]
+        #             ], axis=1).reset_index().drop(columns="index")
         #             temp_feature_test_df = pd.concat([
-        #                 self.cereals_feature_test[first_feature_df],
-        #                 self.cereals_feature_test[second_feature_df],
-        #                 self.cereals_feature_test[third_feature_df]
-        #             ]) 
-
-        #             temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
+        #                 self.cereals_feature_test[first_feature],
+        #                 self.cereals_feature_test[second_feature],
+        #                 self.cereals_feature_test[third_feature]
+        #             ], axis=1).reset_index().drop(columns="index")
+        #             # print(temp_feature_train_df.sample(1))
+        #             temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
         #             temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
         #             mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-        #             print("Features {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
+        #             print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+        # ?###########################################
+
+
+        #?############### Real Code (WIP) ####################
+        
+        #?###########################################
+
         pass
 
 
