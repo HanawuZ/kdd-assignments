@@ -1,5 +1,5 @@
 """ Task : Finds 3 attributes(features) that give a lowest mean absolute error """
-    # 11 Features
+    # 12 Features
     # ? Features : [calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups]
 
 +++++ Pseudo Code +++++
@@ -225,7 +225,8 @@ for i in range(11):
     # round 1 : features[9] features[10] features[7]
     # round 1 : features[9] features[10] features[8]
     # round 1 : features[9] features[10] features[11]
-
+    
+    ## i = 10
     # i = 10,11 is static; 
     # Ignore features[9]
     # round 1 : features[10] features[11] features[0]

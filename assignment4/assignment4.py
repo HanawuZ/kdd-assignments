@@ -42,7 +42,7 @@ if __name__ == "__main__":
     cereal_rating_prediction_model = CerealRatingPrediction(cereals_df)
 
     # Show cereaks dataframe infomantion.
-    # cereal_rating_prediction_model.getCerealDataframeInfo()
+    cereal_rating_prediction_model.getCerealDataframeInfo()
     
     # Split dataframe to train set & test set.
     # Split feature labels & class label(s).
@@ -50,8 +50,11 @@ if __name__ == "__main__":
     
     # Initialize linear regression model.
     cereal_rating_prediction_model.modelInit()
+    print("\n--------------------------------------------------------------")
+    cereal_rating_prediction_model.findLowestMeanAbsoluteError()
 
-    
+
+
     # ---------------------- Stash --------------------
     
     # Train model.
