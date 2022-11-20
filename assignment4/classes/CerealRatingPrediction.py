@@ -249,12 +249,14 @@ class CerealRatingPrediction:
         #             temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
         #             mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
         #             print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
-        # ?###########################################
+        # ?###################################################
 
-
+        #! Problem : this program doesn't give an actual lowest mae.
         #?############### Real Code (WIP) ####################
         temp_regression_model = LinearRegression()
-        ignore_index = 0
+        ignore_index=0
+        lowest_mae = 0
+        attr1,attr2,attr3="","",""
         features = list(self.cereals_feature_train.columns)
         for i in range(len(features)-1):
             first_feature = features[i]
@@ -277,8 +279,13 @@ class CerealRatingPrediction:
                         temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
                         temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
                         mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-                        print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
-            
+                        print("Features {}, {} and {} give MAE = {}".format(first_feature, second_feature, third_feature, mae))        
+                        if (mae <= lowest_mae):
+                            attr1 = first_feature
+                            attr2 = second_feature
+                            attr3 = third_feature
+                            lowest_mae = mae
+
                 for j in range(i+2,len(features)):
                     third_feature = features[j]
                     temp_feature_train_df = pd.concat([
@@ -295,7 +302,17 @@ class CerealRatingPrediction:
                     temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
                     temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
                     mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-                    print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+                    print("Features {}, {} and {} give MAE = {}".format(first_feature, second_feature, third_feature, mae))        
+                    if lowest_mae == 0:
+                        lowest_mae = mae
+                        print("First MAE = {}".format(lowest_mae))
+
+                    # mae = 5.80 <= lowest_mae = 6.59
+                    elif (mae <= lowest_mae):
+                        attr1 = first_feature
+                        attr2 = second_feature
+                        attr3 = third_feature
+                        lowest_mae = mae
             else :
                 ignore_index+=1
                 for k in range(ignore_index):
@@ -315,8 +332,15 @@ class CerealRatingPrediction:
                     temp_regression_model.fit(temp_feature_train_df, self.cereals_rating_train)
                     temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
                     mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_predicted_rating)
-                    print("Features {}, {} and {} -> MAE = {}".format(first_feature, second_feature, third_feature, mae))
+                    print("Features {}, {} and {} give MAE = {}".format(first_feature, second_feature, third_feature, mae))   
+                    if (mae <= lowest_mae):
+                        attr1 = first_feature
+                        attr2 = second_feature
+                        attr3 = third_feature
+                        lowest_mae = mae     
                     
+        #* Features sugars, potass and sodium give a lowest MAE = 4.336321499716727
+        print("-----------------------------------\nFeatures {}, {} and {} give lowest MAE = {}".format(attr1, attr2, attr3, lowest_mae))        
         #?###########################################
 
 
