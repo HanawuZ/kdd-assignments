@@ -66,7 +66,7 @@ class CerealRatingPrediction:
     # Cereal rating prediction method
     def predictRating(self):
         self.predicted_rating = self.cereal_rating_prediction_model.predict(self.cereals_feature_test)
-        print(self.predicted_rating)
+        # print(self.predicted_rating)
 
     # * Methos for show regression statistics
     def showStats(self):
@@ -102,14 +102,10 @@ class CerealRatingPrediction:
         for coef, feature_name in zip(self.regression_coef, self.cereals_feature_train.columns):
             # Round coefficient value to get value with 4 decimals.
             
-            # If coef value < 0 then parse value to string with '-' signed
-            # "- X.XXXX" + " * " + feature name
             # format ==> - X.XXXX * feature_name 
             if (coef < 0):
                 print("- {coef} * {feature_name}".format(coef=np.around(np.absolute(coef), decimals=4), feature_name=feature_name))
 
-            # If coef value > 0 then parse value to string with '+' signed
-            # "+ X.XXXX" + " * " + feature name
             # format ==> + X.XXXX * feature_name 
             else :
                 print("+ {coef} * {feature_name}".format(coef=np.around(coef, decimals=4), feature_name=feature_name))
@@ -134,32 +130,59 @@ class CerealRatingPrediction:
         # X Axis is class labels (`rating`).
         
         # Get protein and actual cereals rating then reset index.
-        protein = self.cereals_feature_test["protein"].reset_index().drop(columns = ["index"])
-        actual_rating = self.cereals_rating_test.reset_index().drop(columns = ["index"])
-        
+
+        # protein = self.cereals_feature_test["protein"].reset_index().drop(columns = ["index"])
         # Transfrom numpy array into pandas series and named column 'rating'
         predicted_rating = pd.Series(self.predicted_rating)
         predicted_rating.name = "rating"
+        
+        # Visualize line graph of predicted cereal rating.
+        # Plot all fetaures-cereal rating relations with seaborn.
+        for attr in self.cereals_feature_test.columns:
+            current_attr_df = self.cereals_feature_test[attr].reset_index().drop(columns = ["index"])
+            sns.lineplot(
+                x="rating" , y=attr ,
+                data = pd.concat([current_attr_df,predicted_rating], axis=1),
+                label="{attr} - rating".format(attr=attr)
+            )
 
-        # Plot protein-cereal rating relations with seaborn.
-        # Compare line graph between protein-actual rating and protein-predicted rating
-        sns.lineplot(
-            x="rating" , y="protein" ,
-            data = pd.concat([protein,actual_rating], axis=1),
-            label="actual"
-        )
-
-        sns.lineplot(
-            x="rating" , y="protein" ,
-            data = pd.concat([protein,predicted_rating], axis=1),
-            label="predicted"
-        )
-        plt.xlabel("cereals rating")
-        plt.ylabel("Proteins")
+        plt.xlabel("Predicted Cereals Rating")
+        plt.ylabel("Features")
         plt.legend()
         plt.show()
 
-        # Visualize line graph of predicted cereal rating.
+    def findLowestMeanAbsoluteError(self):
+        # +++++ Pseudo Code +++++
+        # Get array of feature names
+        # Initialize temporary linear regression model.
+        # Assign ignore_index = 0
+        # Iteration from i = 0 to i = 10
+        #     Choose features[i],features[i+1]
+        #     If i < 10 then
+        #         If i >= 2 then
+        #             Increment ignore_index by 1
+        #             Iteration from k = 0 to k = ignore_index
+        #                 Choose features[k]
+        #                 Create new feature_train_df with features[i],features[i+1] and features[j]
+        #                 Train regression model with new feature_train_df and label_train_df
+        #                 Get mean absolute error
+                        
+        #         Assign j = i+2
+        #         Iteration from j to j = 11
+        #             Choose features[j]
+        #             Create new feature_train_df with features[i],features[i+1] and features[j]
+        #             Train regression model with new feature_train_df and label_train_df
+        #             Get mean absolute error
+                
+        #     Else then
+        #         Increment ignore_index by 1
+        #         Iteration from k = 0 to k = ignore_index
+        #             Choose features[k]
+        #             Create new feature_train_df with features[i],features[i+1] and features[j]
+        #             Train regression model with new feature_train_df and label_train_df
+        #             Get mean absolute error
+        pass
+
 
         
         

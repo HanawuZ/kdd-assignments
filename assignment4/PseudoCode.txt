@@ -1,0 +1,242 @@
+""" Task : Finds 3 attributes(features) that give a lowest mean absolute error """
+    # 11 Features
+    # ? Features : [calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups]
+
++++++ Pseudo Code +++++
+Get array of feature names
+Initialize temporary linear regression model.
+Assign ignore_index = 0
+Iteration from i = 0 to i = 10
+    Choose features[i],features[i+1]
+    If i < 10 then
+        If i >= 2 then
+            Increment ignore_index by 1
+            Iteration from k = 0 to k = ignore_index
+                Choose features[k]
+                Create new feature_train_df with features[i],features[i+1] and features[j]
+                Train regression model with new feature_train_df and label_train_df
+                Get mean absolute error
+                
+        Assign j = i+2
+        Iteration from j to j = 11
+            Choose features[j]
+            Create new feature_train_df with features[i],features[i+1] and features[j]
+            Train regression model with new feature_train_df and label_train_df
+            Get mean absolute error
+        
+    Else then
+        Increment ignore_index by 1
+        Iteration from k = 0 to k = ignore_index
+            Choose features[k]
+            Create new feature_train_df with features[i],features[i+1] and features[j]
+            Train regression model with new feature_train_df and label_train_df
+            Get mean absolute error
+
+#################################################################
+########## + Possible Algorithm codes + ##########
+ignore_index = 0
+temp_regression_model = LinearRegression()                
+for i in range(11):
+    first_feature_df = features[i]
+    second_feature_df = features[i+1]
+    if (i<10):
+        if (i>=2):
+            ignore_index+=1
+            for k in range(ignore_index):
+                third_feature_df = features[k]
+                temp_feature_train_df = pd.concat([
+                    self.cereals_feature_train[first_feature_df],
+                    self.cereals_feature_train[second_feature_df],
+                    self.cereals_feature_train[third_feature_df]
+                ]) 
+
+                temp_feature_test_df = pd.concat([
+                    self.cereals_feature_test[first_feature_df],
+                    self.cereals_feature_test[second_feature_df],
+                    self.cereals_feature_test[third_feature_df]
+                ]) 
+
+                temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
+                temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+                mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_feature_test_df));
+                print("Feature {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
+            
+            for j in range(i+2,12):
+                third_feature_df = features[j]
+                temp_feature_train_df = pd.concat([
+                    self.cereals_feature_train[first_feature_df],
+                    self.cereals_feature_train[second_feature_df],
+                    self.cereals_feature_train[third_feature_df]
+                ]) 
+
+                temp_feature_test_df = pd.concat([
+                    self.cereals_feature_test[first_feature_df],
+                    self.cereals_feature_test[second_feature_df],
+                    self.cereals_feature_test[third_feature_df]
+                ]) 
+
+                temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
+                temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+                mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_feature_test_df));
+                print("Feature {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
+            
+    else:
+        ignore_index+=1
+        for k in range(ignore_index):
+            third_feature_df = features[k]
+            temp_feature_train_df = pd.concat([
+                self.cereals_feature_train[first_feature_df],
+                self.cereals_feature_train[second_feature_df],
+                self.cereals_feature_train[third_feature_df]
+            ]) 
+
+            temp_feature_test_df = pd.concat([
+                self.cereals_feature_test[first_feature_df],
+                self.cereals_feature_test[second_feature_df],
+                self.cereals_feature_test[third_feature_df]
+            ]) 
+
+            temp_regression_model.fit(temp_feature_train_df,  self.cereals_rating_train)
+            temp_predicted_rating = temp_regression_model.predict(temp_feature_test_df)
+            mae = metrics.mean_absolute_error(self.cereals_rating_test, temp_feature_test_df));
+            print("Feature {}, {} and {} give MAE = {}".format(first_feature_df, second_feature_df, third_feature_df, mae))
+            
+#################################################################
+
+## Plans
+        # Ignore none
+        # i = 0,1 is static; j=2 is increment til 11
+        # round 1 : features[0] features[1] features[2]
+        # round 2 : features[0] features[1] features[3]
+        # round 3 : features[0] features[1] features[4]
+        # round 4 : features[0] features[1] features[5]
+        # round 5 : features[0] features[1] features[6]
+        # round 6 : features[0] features[1] features[7]
+        # round 7 : features[0] features[1] features[8]
+        # round 8 : features[0] features[1] features[9]
+        # round 9 : features[0] features[1] features[10]
+        # round 10 : features[0] features[1] features[11]
+
+        ## i = 1
+        # i = 1,2 is static; j=3 is increment til 11
+        # store ignore index ; temp = 0
+        # Ignore features[0]
+        # round 1 : features[1] features[2] features[3]
+        # round 1 : features[1] features[2] features[4]
+        # round 1 : features[1] features[2] features[5]
+        # round 1 : features[1] features[2] features[6]
+        # round 1 : features[1] features[2] features[7]
+        # round 1 : features[1] features[2] features[8]
+        # round 1 : features[1] features[2] features[9]
+        # round 1 : features[1] features[2] features[10]
+        # round 1 : features[1] features[2] features[11]
+    
+    /////////////////////////////////////////////////////////////////
+    ## i = 2
+    # i = 2,3 is static; 
+    # use previous temp assign to j ; j=0
+    # increment ignore index temp++ -> store ignore index ; temp = 1
+    # then j=4 is increment til 11
+    # Ignore features[1]
+    # round 1 : features[2] features[3] features[0]
+    # round 1 : features[2] features[3] features[4]
+    # round 1 : features[2] features[3] features[5]
+    # round 1 : features[2] features[3] features[6]
+    # round 1 : features[2] features[3] features[7]
+    # round 1 : features[2] features[3] features[8]
+    # round 1 : features[2] features[3] features[9]
+    # round 1 : features[2] features[3] features[10]
+    # round 1 : features[2] features[3] features[11]
+    
+    ## i = 3
+    # i = 3,4 is static; 
+    # use previous temp assign to j ; j=0,1
+    # increment ignore index temp++ -> store ignore index ; temp = 2
+    # then j=5 is increment til 11
+    # Ignore features[2] 
+    # round 1 : features[3] features[4] features[0]
+    # round 1 : features[3] features[4] features[1]
+    # round 1 : features[3] features[4] features[5]
+    # round 1 : features[3] features[4] features[6]
+    # round 1 : features[3] features[4] features[7]
+    # round 1 : features[3] features[4] features[8]
+    # round 1 : features[3] features[4] features[9]
+    # round 1 : features[3] features[4] features[10]
+    # round 1 : features[3] features[4] features[11]
+    /////////////////////////////////////////////////////////////////
+
+    ## i = 4
+    # i = 4,5 is static; 
+    # use previous temp assign to j ; j=0,1,2
+    # increment ignore index temp++ -> store ignore index ; temp = 3
+    # then j=6 is increment til 11
+    # Ignore features[3]
+    # round 1 : features[4] features[5] features[0]
+    # round 1 : features[4] features[5] features[1]
+    # round 1 : features[4] features[5] features[2]
+    # round 1 : features[4] features[5] features[6]
+    # round 1 : features[4] features[5] features[7]
+    # round 1 : features[4] features[5] features[8]
+    # round 1 : features[4] features[5] features[9]
+    # round 1 : features[4] features[5] features[10]
+    # round 1 : features[4] features[5] features[11]
+
+    ## i = 5
+    # i = 5,6 is static; 
+    # use previous temp assign to j ; j=0,1,2,3
+    # increment ignore index temp++ -> store ignore index ; temp = 4
+    # then j=7 is increment til 11
+    # Ignore features[4]
+    # round 1 : features[5] features[6] features[0]
+    # round 1 : features[5] features[6] features[1]
+    # round 1 : features[5] features[6] features[2]
+    # round 1 : features[5] features[6] features[3]
+    # round 1 : features[5] features[6] features[7]
+    # round 1 : features[5] features[6] features[8]
+    # round 1 : features[5] features[6] features[9]
+    # round 1 : features[5] features[6] features[10]
+    # round 1 : features[5] features[6] features[11]
+    
+    # i = 6,7 is static; 
+    # use previous temp assign to j ; j=0,1,2,3,4
+    # increment ignore index temp++ -> store ignore index ; temp = 5
+    # then j=8 is increment til 11
+    # Ignore features[5]
+    # round 1 : features[6] features[7] features[0]
+    # round 1 : features[6] features[7] features[1]
+    # round 1 : features[6] features[7] features[2]
+    # .
+    # .
+    # .
+    # .
+
+    # i = 9,10 is static; 
+    # use previous temp assign to j ; j=0 to 7
+    # increment ignore index temp++ -> store ignore index ; temp = 8
+    # then j=11
+    # Ignore features[8]
+    # round 1 : features[9] features[10] features[0]
+    # round 1 : features[9] features[10] features[1]
+    # round 1 : features[9] features[10] features[2]
+    # round 1 : features[9] features[10] features[3]
+    # round 1 : features[9] features[10] features[4]
+    # round 1 : features[9] features[10] features[5]
+    # round 1 : features[9] features[10] features[6]
+    # round 1 : features[9] features[10] features[7]
+    # round 1 : features[9] features[10] features[8]
+    # round 1 : features[9] features[10] features[11]
+
+    # i = 10,11 is static; 
+    # Ignore features[9]
+    # round 1 : features[10] features[11] features[0]
+    # round 1 : features[10] features[11] features[1]
+    # round 1 : features[10] features[11] features[2]
+    # round 1 : features[10] features[11] features[3]
+    # round 1 : features[10] features[11] features[4]
+    # round 1 : features[10] features[11] features[5]
+    # round 1 : features[10] features[11] features[6]
+    # round 1 : features[10] features[11] features[7]
+    # round 1 : features[10] features[11] features[8]
+
+    
+    

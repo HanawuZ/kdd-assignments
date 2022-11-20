@@ -5,7 +5,7 @@ from modules.cerealsPerformanceReport import *
 from classes.CerealRatingPrediction import CerealRatingPrediction
 
 # * Tasks
-# * (1) Program performance report & data visualization module.
+# * (1) Done : Program performance report & data visualization module.
 # * (2) Improve program to approch lowest Mean absolute error as low as possible. 
 # * (3) Clean codes.
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     cereal_rating_prediction_model = CerealRatingPrediction(cereals_df)
 
     # Show cereaks dataframe infomantion.
-    cereal_rating_prediction_model.getCerealDataframeInfo()
+    # cereal_rating_prediction_model.getCerealDataframeInfo()
     
     # Split dataframe to train set & test set.
     # Split feature labels & class label(s).
@@ -51,18 +51,21 @@ if __name__ == "__main__":
     # Initialize linear regression model.
     cereal_rating_prediction_model.modelInit()
 
-    # Train model.
-    cereal_rating_prediction_model.trainModel()
-
-    cereal_rating_prediction_model.showRegressionEquation()
     
-    # Predict
-    cereal_rating_prediction_model.predictRating()
+    # ---------------------- Stash --------------------
+    
+    # Train model.
+    # cereal_rating_prediction_model.trainModel()
 
-    # Display performance report.
-    cereal_rating_prediction_model.showStats()
+    # cereal_rating_prediction_model.showRegressionEquation()
+    
+    # # Predict
+    # cereal_rating_prediction_model.predictRating()
 
-    cereal_rating_prediction_model.visualizePrediction()
+    # # Display performance report.
+    # cereal_rating_prediction_model.showStats()
+
+    # cereal_rating_prediction_model.visualizePrediction()
 
     
     # #* SOURCE : https://pandas.pydata.org/docs/reference/api/pandas.concat.html
@@ -73,21 +76,7 @@ if __name__ == "__main__":
     #         name="Predicted Rating")
     #     ] ,
     #     axis = "columns"  
-    # )
-
-    # print(Compare_Ad_dataframe.head(5))
-    # print(cereals_df.info())
-
-    # # showRegressionStats(cereals_feature_train, cereals_feature_test, cereals_rating_train, cereals_rating_test)
-    # regressionPerformanceReport(cereals_feature_test, cereals_rating_prediction_model, cereals_rating_test , cereals_predicted_rating)
-    
-    # # Coeff, Slope
-    # # print("\nCoef : ",cereals_rating_prediction_model.coef_)
-    
-    # # Intercept
-    # # print("Intercept : ",cereals_rating_prediction_model.intercept_)
-    
-    
+    # ) 
 
     
     
