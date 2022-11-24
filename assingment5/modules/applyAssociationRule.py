@@ -30,16 +30,21 @@ def applyAssociationRule(shopping_transaction):
         if (len(frequent_itemsets.index) == 0):
             print("Dataframe is empty!")
             sup+=0.1
-            continue
+            break
         
         # The length column has been added to increase ease of filtering.
         frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 
         # Create association rules.
         rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+
+        # Sort association rules by confidence descending
         rules = rules.sort_values("confidence",ascending=False)
-    
+
+        # Define minimum confidence.
         conf = 0.1
+
+        # Iterate confidence value in range 0.0-1.0 incresed by 0.1
         while conf <= 1.0:
             print("Minimum Support = {} | Minimum Confidence = {}".format(sup,conf))
             print(rules[(rules['confidence'] > conf) & (rules['lift'] > 1) ])

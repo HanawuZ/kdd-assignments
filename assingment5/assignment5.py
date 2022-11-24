@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import pathlib
 from modules.shoppingCartDataPreprocessing import *
 from modules.applyAssociationRule import *
