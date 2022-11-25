@@ -72,4 +72,26 @@ class airlineSatisfactionClassifier:
     #* Method for visualize datas.
     def dataVisualization(self):
         pass
+
+    #* Method for show performance report.
+    def showPerformanceReport(self):
+        """
+        Show performance report of classifications by plot bar graphs of
+        accuracy, precision, f1-score and support of each models.
+
+        Paramenter :
+        - Naive Bayes classification report.
+        - Naive Bayes accuracy.
+        - Naive Bayes predicted class values.
+        - Naive Bayes actual class values.
+
+        - Decision Tree classification report.
+        - Decision Tree accuracy.
+        - Decision Tree predicted class values.
+        - Decision Tree actual class values.
+
+        Statements :
+        - Show subplots of two classification report.
+        """
+        pass
     

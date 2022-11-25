@@ -118,8 +118,6 @@ clf_dict = {
 # print(confusion_matrix(y_true=actual_titanic_test_survived_class, y_pred=bayes_pred_survived_class))
 # print(confusion_matrix(y_true=actual_titanic_test_survived_class, y_pred=decision_tree_pred_survived_class))
 
-classificationComparison(clf_dict)
-
 # confusionMatrixComparison(clf_list, prepared_titanic_test_df, actual_titanic_test_survived_class)
 # classificationReportComparison(bayes_clf_report, decision_tree_clf_report)
 
